@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/audio_book_text_view_label"
+                android:id="@+id/audio_book_text_view"/>
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/books_text_view_label"
+                android:id="@+id/books_text_view"/>
+
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/ios_text_view_label"
+                android:id="@+id/ios_text_view"/>
+
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/mac_text_view_label"
+                android:id="@+id/mac_text_view"/>
+
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/movies_text_view_label"
+                android:id="@+id/movies_text_view"/>
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/itunes_u_text_view_label"
+                android:id="@+id/itunes_u_text_view"/>
+
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/music_video_text_view_label"
+                android:id="@+id/music_video_text_view"/>
+
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/pod_cast_text_view_label"
+                android:id="@+id/pod_cast_text_view"/>
+
+            <TextView
+                style="@style/scrollTextViewOptions"
+                android:text="@string/tv_shows_text_view_label"
+                android:id="@+id/tv_shows_text_view"/>
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>
