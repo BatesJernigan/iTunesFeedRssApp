@@ -1,7 +1,9 @@
 package com.example.itunesfeedrssapp;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 public class MediaListActivity extends AppCompatActivity {
 
@@ -28,16 +32,16 @@ public class MediaListActivity extends AppCompatActivity {
         Log.d("demo", "this in media list: " + this.getIntent());
         String url = this.getIntent().getExtras().getString(MainActivity.URL);
         Log.d("demo", "url " + url);
-        new GetPersonsAsync().execute(url);
-
+        new GetMediaAsync().execute(url);
     }
 
-    public class GetPersonsAsync extends AsyncTask<String, Void, ArrayList<Media>> {
+    public class GetMediaAsync extends AsyncTask<String, Void, ArrayList<Media>> {
 
         ProgressDialog progressDialog;
 
         @Override
         protected ArrayList<Media> doInBackground(String... params) {
+            SharedPreferences sharedPreferences;
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -53,6 +57,9 @@ public class MediaListActivity extends AppCompatActivity {
                         sb.append(line);
                         line = reader.readLine();
                     }
+                    sharedPreferences = getSharedPreferences("feed", 0);
+                    String test = sharedPreferences.getString("feed", "nothing to see here");
+                    Log.d("demo", "shared Preferences " + test);
                     Log.d("demo",sb.toString());
 
                     return MediaUtil.MediaJSONParser.parseMedia(sb.toString());

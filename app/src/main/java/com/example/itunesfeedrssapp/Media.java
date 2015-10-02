@@ -1,9 +1,12 @@
 package com.example.itunesfeedrssapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by batesjernigan on 10/2/15.
  */
-public class Media {
+public class Media implements Parcelable{
 
     String title, artist, duration, category, release_Date, link, summary;
     int price;
@@ -70,5 +73,58 @@ public class Media {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public static final Parcelable.Creator<Media> CREATOR = new Parcelable.Creator<Media>() {
+        public Media createFromParcel(Parcel in) {
+            return new Media(in);
+        }
+
+        public Media[] newArray(int size) {
+            return new Media[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(artist);
+        dest.writeString(duration);
+        dest.writeString(category);
+        dest.writeString(release_Date);
+        dest.writeString(link);
+        dest.writeString(summary);
+        dest.writeInt(price);
+    }
+
+    private Media(Parcel in) {
+        this.title = in.readString();
+        this.artist = in.readString();
+        this.duration = in.readString();
+        this.category = in.readString();
+        this.release_Date = in.readString();
+        this.link = in.readString();
+        this.summary = in.readString();
+        this.price = in.readInt();
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Media{" +
+            "artist='" + artist + '\'' +
+            ", title='" + title + '\'' +
+            ", duration='" + duration + '\'' +
+            ", category='" + category + '\'' +
+            ", release_Date='" + release_Date + '\'' +
+            ", link='" + link + '\'' +
+            ", summary='" + summary + '\'' +
+            ", price=" + price +
+            '}';
     }
 }

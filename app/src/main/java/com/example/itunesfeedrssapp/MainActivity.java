@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
 
     final static String URL = "URL";
@@ -33,81 +35,80 @@ public class MainActivity extends Activity {
 
         if (isConnectedOnline()) {
             Toast.makeText(MainActivity.this, "Its Connected", Toast.LENGTH_SHORT).show();
+            audio_books.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/topaudiobooks/limit=25/json");
+                    startActivity(intent);
+                }
+            });
+
+            books.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/topfreeebooks/limit=25/json");
+                    startActivity(intent);
+                }
+            });
+
+            iOs_apps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/newapplications/limit=25/json");
+                    startActivity(intent);
+                }
+            });
+
+            mac_apps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/topfreemacapps/limit=25/json");
+                    startActivity(intent);
+                }
+            });
+
+            movies.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/topmovies/limit=25/json");
+                    startActivity(intent);
+                }
+            });
+
+            podcast.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/toppodcasts/limit=25/json");
+                    startActivity(intent);
+                }
+            });
+
+            itunes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/topitunesucollections/limit=25/json");
+                    startActivity(intent);
+                }
+            });
+
+            tvshow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
+                    intent.putExtra("URL","https://itunes.apple.com/us/rss/toptvepisodes/limit=25/json");
+                    startActivity(intent);
+                    }
+            });
         } else {
             Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_SHORT).show();
         }
-
-        audio_books.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/topaudiobooks/limit=25/json");
-                startActivity(intent);
-            }
-        });
-
-        books.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/topfreeebooks/limit=25/json");
-                startActivity(intent);
-            }
-        });
-
-        iOs_apps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/newapplications/limit=25/json");
-                startActivity(intent);
-            }
-        });
-
-        mac_apps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/topfreemacapps/limit=25/json");
-                startActivity(intent);
-            }
-        });
-
-        movies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/topmovies/limit=25/json");
-                startActivity(intent);
-            }
-        });
-
-        podcast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/toppodcasts/limit=25/json");
-                startActivity(intent);
-            }
-        });
-
-        itunes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/topitunesucollections/limit=25/json");
-                startActivity(intent);
-            }
-        });
-
-        tvshow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                intent.putExtra("URL","https://itunes.apple.com/us/rss/toptvepisodes/limit=25/json");
-                startActivity(intent);
-            }
-        });
     }
 
 

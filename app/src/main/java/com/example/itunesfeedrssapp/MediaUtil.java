@@ -17,7 +17,6 @@ public class MediaUtil {
 
         static public ArrayList<Media> parseMedia(String in) throws JSONException {
             ArrayList<Media> medialist = new ArrayList<Media>();
-            Media m = new Media();
 
             JSONObject root = new JSONObject(in); // cause the data starts with an array
 
