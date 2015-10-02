@@ -13,4 +13,9 @@
     <string name="pod_cast_text_view_label">Pod Cast</string>
     <string name="tv_shows_text_view_label">TV Shows</string>
     <string name="title_activity_media_list">Media List Activity</string>
+    <string name="title_activity_detailed_media">DetailedMediaActivity</string>
+    <string name="app_link_text_label">App Link in Store</string>
+    <string name="category_text_view_label">Category: </string>
+    <string name="price_text_view_label">Price: </string>
+    <string name="by_text_view_label">By:</string>
 </resources>
