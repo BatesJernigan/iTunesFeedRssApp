@@ -1,59 +1,78 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal" >
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/audio_book_text_view_label"
-                android:id="@+id/audio_book_text_view"/>
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/books_text_view_label"
-                android:id="@+id/books_text_view"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/Audio_Book"
+        android:id="@+id/textViewAudio_Book"
+        />
 
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/ios_text_view_label"
-                android:id="@+id/ios_text_view"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/Books"
+        android:id="@+id/textViewBooks"
+        android:layout_gravity="center_horizontal" />
 
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/mac_text_view_label"
-                android:id="@+id/mac_text_view"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/iOSApps"
+        android:id="@+id/textViewiOSApps"
+        android:layout_gravity="center_horizontal" />
 
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/movies_text_view_label"
-                android:id="@+id/movies_text_view"/>
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/itunes_u_text_view_label"
-                android:id="@+id/itunes_u_text_view"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/MacApps"
+        android:id="@+id/textViewMacApps"
+        android:layout_gravity="center_horizontal" />
 
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/music_video_text_view_label"
-                android:id="@+id/music_video_text_view"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/Movies"
+        android:id="@+id/textViewMovies"
+        android:layout_gravity="center_horizontal" />
 
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/pod_cast_text_view_label"
-                android:id="@+id/pod_cast_text_view"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/iTunes"
+        android:id="@+id/textViewiTunes"
+        android:layout_gravity="center_horizontal" />
 
-            <TextView
-                style="@style/scrollTextViewOptions"
-                android:text="@string/tv_shows_text_view_label"
-                android:id="@+id/tv_shows_text_view"/>
-    </LinearLayout>
-    </ScrollView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/PodCast"
+        android:id="@+id/textViewPodCast"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/TvShow"
+        android:id="@+id/textViewTvShow"
+        android:layout_gravity="center_horizontal" />
+
+
 </LinearLayout>

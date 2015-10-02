@@ -1,15 +1,16 @@
 <resources>
-    <string name="app_name">iTunes Feed RSS App</string>
+    <string name="app_name">Homework4</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="audio_book_text_view_label">Audio Book</string>
-    <string name="books_text_view_label">Books</string>
-    <string name="ios_text_view_label">iOS Apps</string>
-    <string name="mac_text_view_label">Mac Apps</string>
-    <string name="movies_text_view_label">Movies</string>
-    <string name="itunes_u_text_view_label">iTunes U</string>
-    <string name="music_video_text_view_label">Music Video</string>
-    <string name="pod_cast_text_view_label">Pod Cast</string>
-    <string name="tv_shows_text_view_label">TV Shows</string>
+    <string name="Audio_Book">Audio Books</string>
+    <string name="Books">Books</string>
+    <string name="iOSApps">iOS Apps</string>
+    <string name="MacApps">Mac Apps</string>
+    <string name="Movies">Movies</string>
+    <string name="iTunes">iTunes U</string>
+    <string name="MusicVideo">Music Video</string>
+    <string name="PodCast">Pod Cast</string>
+    <string name="TvShow">Tv Shows</string>
+    <string name="title_activity_media_list">MediaListActivity</string>
 </resources>
