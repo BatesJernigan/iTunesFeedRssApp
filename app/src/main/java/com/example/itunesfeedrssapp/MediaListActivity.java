@@ -1,95 +1,133 @@
 package com.example.itunesfeedrssapp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.io.BufferedReader;
+import org.json.JSONObject;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+
 public class MediaListActivity extends AppCompatActivity {
+
+    ProgressDialog progressDialog;
+    ArrayList<String> list = new ArrayList<>();
+    ArrayList<String> list_img = new ArrayList<>();
+    List<String> samplelist = new ArrayList<String>();
+    List<String> imglist = new ArrayList<String>();
+    List<String> sample = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_list);
-        Log.d("demo", "this in media list: " + this.getIntent());
-        String url = this.getIntent().getExtras().getString(MainActivity.URL);
-        Log.d("demo", "url " + url);
-        new GetMediaAsync().execute(url);
+
+        String url = getIntent().getExtras().getString(MainActivity.URL);
+        Log.d("demo", url);
+        new ProgressTask().execute(url);
+
     }
 
-    public class GetMediaAsync extends AsyncTask<String, Void, ArrayList<Media>> {
+    private class ProgressTask extends AsyncTask<String , Void , ArrayList<String>> {
 
-        ProgressDialog progressDialog;
 
         @Override
-        protected ArrayList<Media> doInBackground(String... params) {
-            SharedPreferences sharedPreferences;
+        protected ArrayList<String> doInBackground(String... params) {
+
+            JSONParser jParser = new JSONParser();
+
+
             try {
-                URL url = new URL(params[0]);
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.setRequestMethod("GET");
-                con.connect();
                 publishProgress();
-                int statusCode = con.getResponseCode();
-                if(statusCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    StringBuilder sb = new StringBuilder();
-                    String line = reader.readLine();
-                    while(line != null) {
-                        sb.append(line);
-                        line = reader.readLine();
-                    }
-                    sharedPreferences = getSharedPreferences("feed", 0);
-                    String test = sharedPreferences.getString("feed", "nothing to see here");
-                    Log.d("demo", "shared Preferences " + test);
-                    Log.d("demo",sb.toString());
+                JSONObject root =  jParser.getJSONFromUrl(params[0]);
+                JSONObject feed2 = root.getJSONObject("feed");
+                JSONArray entry = feed2.getJSONArray("entry");
 
-                    return MediaUtil.MediaJSONParser.parseMedia(sb.toString());
+                for(int i = 0; i < entry.length(); i = i+2) {
+                    String title = entry.getJSONObject(i).getJSONObject("title").getString("label");
+                    String imgUrl = entry.getJSONObject(i).getJSONArray("im:image").getJSONObject(0).getString("label");
+
+                    list.add(i, title);
+                    list.add((i + 1), imgUrl);
                 }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ProtocolException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            // this returns an array list of the form (title1, imag_url1, title2, img_url2, etc..)
+            return list;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Media> result) {
+        protected void onPostExecute(ArrayList<String> result) {
             super.onPostExecute(result);
-            if(result != null){
-                Log.d("demo",result.toString());
-            }
             progressDialog.dismiss();
+            if(result != null) {
+                Log.d("demo", "result: "+result.toString());
+                // what is img_pref this used for?
+                //SharedPreferences img_pref = getApplicationContext().getSharedPreferences("MyImgList", MODE_PRIVATE);
+
+                // do you have a link to explain all of this? I don't really understand it and
+                // would love some clarity
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyDataList", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                Set<String> set = new HashSet<>();
+                set.addAll(result);
+                editor.putStringSet("list", set);
+                editor.commit();
+
+                // this set is never used? also
+//                set = pref.getStringSet("list", null);
+//                ArrayList<String> sample = new ArrayList<>(set);
+
+                ScrollView sv = new ScrollView(MediaListActivity.this);
+                sv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayout rl = new LinearLayout(MediaListActivity.this);
+                rl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                rl.setOrientation(LinearLayout.VERTICAL);
+                sv.addView(rl);
+                setContentView(sv);
+
+                //changed this to result instead of sample instead of result because the ordering
+                // was being messed up.
+                for(int i=0; i < result.size(); i = i+2) {
+                    // TODO change the layout of this
+                    TextView tv = new TextView(MediaListActivity.this);
+                    tv.setText(result.get(i));
+                    rl.addView(tv);
+
+                    ImageView im = new ImageView(MediaListActivity.this);
+                    Picasso.with(MediaListActivity.this).load(result.get(i+1)).resize(100, 100).centerCrop().into(im);
+                    rl.addView(im);
+                }
+            }
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
             progressDialog = new ProgressDialog(MediaListActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(false);
