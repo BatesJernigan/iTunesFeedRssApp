@@ -25,6 +25,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Audio_Book"
         android:id="@+id/textViewAudio_Book"
+        android:layout_marginBottom="15dp"
         />
 
     <TextView
@@ -33,7 +34,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Books"
         android:id="@+id/textViewBooks"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,7 +43,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/iOSApps"
         android:id="@+id/textViewiOSApps"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,7 +52,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/MacApps"
         android:id="@+id/textViewMacApps"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,7 +61,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Movies"
         android:id="@+id/textViewMovies"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -65,7 +70,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/iTunes"
         android:id="@+id/textViewiTunes"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,7 +79,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/PodCast"
         android:id="@+id/textViewPodCast"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:layout_width="wrap_content"
