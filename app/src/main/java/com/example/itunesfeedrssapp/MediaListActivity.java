@@ -7,10 +7,12 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -30,11 +32,6 @@ public class MediaListActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog;
     ArrayList<String> list = new ArrayList<>();
-    ArrayList<String> list_img = new ArrayList<>();
-    List<String> samplelist = new ArrayList<String>();
-    List<String> imglist = new ArrayList<String>();
-    List<String> sample = new ArrayList<String>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +51,6 @@ public class MediaListActivity extends AppCompatActivity {
         protected ArrayList<String> doInBackground(String... params) {
 
             JSONParser jParser = new JSONParser();
-
-
             try {
                 publishProgress();
                 JSONObject root =  jParser.getJSONFromUrl(params[0]);
@@ -101,25 +96,40 @@ public class MediaListActivity extends AppCompatActivity {
 //                set = pref.getStringSet("list", null);
 //                ArrayList<String> sample = new ArrayList<>(set);
 
-                ScrollView sv = new ScrollView(MediaListActivity.this);
-                sv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                LinearLayout rl = new LinearLayout(MediaListActivity.this);
-                rl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                rl.setOrientation(LinearLayout.VERTICAL);
-                sv.addView(rl);
-                setContentView(sv);
+//                ScrollView scrollView = new ScrollView(MediaListActivity.this);
+//                scrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+//                LinearLayout horizontalLinearLayout = new LinearLayout(MediaListActivity.this);
+//                horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+//                horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+//                scrollView.addView(horizontalLinearLayout);
+//                setContentView(scrollView);
+
+                LinearLayout verticalLayout = (LinearLayout) findViewById(R.id.child_vertical_layout);
 
                 //changed this to result instead of sample instead of result because the ordering
                 // was being messed up.
                 for(int i=0; i < result.size(); i = i+2) {
-                    // TODO change the layout of this
-                    TextView tv = new TextView(MediaListActivity.this);
-                    tv.setText(result.get(i));
-                    rl.addView(tv);
+                    LinearLayout horizontalLinearLayout = new LinearLayout(MediaListActivity.this);
+                    horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                    horizontalLinearLayout.setPadding(10, 10, 10, 10);
 
                     ImageView im = new ImageView(MediaListActivity.this);
                     Picasso.with(MediaListActivity.this).load(result.get(i+1)).resize(100, 100).centerCrop().into(im);
-                    rl.addView(im);
+                    horizontalLinearLayout.addView(im);
+
+                    TextView tv = new TextView(MediaListActivity.this);
+                    tv.setText(result.get(i));
+                    horizontalLinearLayout.addView(tv);
+
+                    horizontalLinearLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("demo", "clicked a horizontal view");
+                        }
+                    });
+
+                    verticalLayout.addView(horizontalLinearLayout);
                 }
             }
         }
@@ -134,5 +144,9 @@ public class MediaListActivity extends AppCompatActivity {
             progressDialog.setMessage("Loading apps ...");
             progressDialog.show();
         }
+    }
+
+    protected void testMethod() {
+
     }
 }

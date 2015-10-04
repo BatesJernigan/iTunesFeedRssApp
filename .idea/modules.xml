@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/iTunesFeedRSSApp.iml" filepath="$PROJECT_DIR$/iTunesFeedRSSApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iTunesFeedRssApp.iml" filepath="$PROJECT_DIR$/iTunesFeedRssApp.iml" />
     </modules>
   </component>
 </project>
