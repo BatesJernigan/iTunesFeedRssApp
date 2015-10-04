@@ -6,19 +6,42 @@ package com.example.itunesfeedrssapp;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
 public class MediaUtil {
 
     static public class MediaJSONParser {
 
         static public ArrayList<Media> parseMedia(String in) throws JSONException {
+            Log.d("demo", "in parse media thingy");
             ArrayList<Media> medialist = new ArrayList<Media>();
+            Gson gson = new GsonBuilder().create();
+
 
             JSONObject root = new JSONObject(in); // cause the data starts with an array
+
+            Object obj = gson.fromJson(in, Object.class);
+
+            Log.d("demo", "obj from json: " + obj.toString());
+
+            Log.d("demo", "feed field: " + root.getJSONObject("feed").getJSONObject("author").toString());
+
+            Media media = gson.fromJson(in, Media.class);
+
+//            Type collectionType2 = new TypeToken<List<String>>() {}.getType();
+//            List<String> listObj = gson.fromJson(root, Type.class);
+//            gson.fromJson(root, ModelObject.class);
+            Log.d("demo", "converted object representation: " + media.toString());
 
 //            String name = root.getString("entry");
 //            Log.d("demo","the entry is"+" "+name);
