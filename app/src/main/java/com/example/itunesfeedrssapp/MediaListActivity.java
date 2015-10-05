@@ -27,22 +27,32 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MediaListActivity extends AppCompatActivity {
     public final static String PREFS_NAME = "iTunesJSON";
     ProgressDialog progressDialog;
     ArrayList<String> list = new ArrayList<>();
+    Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_list);
 
-        String url = getIntent().getExtras().getString(MainActivity.URL);
-        Log.d("demo", url);
+        int timeInMilliseconds = 2*60*1000;
+
+        final String url = getIntent().getExtras().getString(MainActivity.URL);
         new ProgressTask().execute(url);
 
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                new ProgressTask().execute(url);
+            }
+        }, timeInMilliseconds, timeInMilliseconds);
     }
 
     private class ProgressTask extends AsyncTask<String , Void , ArrayList<String>> {
@@ -96,13 +106,13 @@ public class MediaListActivity extends AppCompatActivity {
                 // do you have a link to explain all of this? I don't really understand it and
                 // would love some clarity
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyDataList", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
+                final SharedPreferences.Editor editor = pref.edit();
                 Set<String> set = new HashSet<>();
                 set.addAll(result);
                 editor.putStringSet("list", set);
                 editor.commit();
 
-                LinearLayout verticalLayout = (LinearLayout) findViewById(R.id.child_vertical_layout);
+                final LinearLayout verticalLayout = (LinearLayout) findViewById(R.id.child_vertical_layout);
 
                 // changed this to result instead of sample instead of result because the ordering
                 // was being messed up.
