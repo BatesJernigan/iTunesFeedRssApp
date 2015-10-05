@@ -42,11 +42,6 @@
 
             <TextView
                 style="@style/scrollTextViewOptions"
-                android:text="@string/music_video_text_view_label"
-                android:id="@+id/music_video_text_view"/>
-
-            <TextView
-                style="@style/scrollTextViewOptions"
                 android:text="@string/pod_cast_text_view_label"
                 android:id="@+id/pod_cast_text_view"/>
 

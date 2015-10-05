@@ -2,6 +2,7 @@ package com.example.itunesfeedrssapp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,7 @@ import java.util.Set;
 
 
 public class MediaListActivity extends AppCompatActivity {
-
+    public final static String PREFS_NAME = "iTunesJSON";
     ProgressDialog progressDialog;
     ArrayList<String> list = new ArrayList<>();
 
@@ -45,24 +46,32 @@ public class MediaListActivity extends AppCompatActivity {
     }
 
     private class ProgressTask extends AsyncTask<String , Void , ArrayList<String>> {
-
-
         @Override
         protected ArrayList<String> doInBackground(String... params) {
 
             JSONParser jParser = new JSONParser();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor jsonEntry = settings.edit();
+
             try {
-                publishProgress();
                 JSONObject root =  jParser.getJSONFromUrl(params[0]);
                 JSONObject feed2 = root.getJSONObject("feed");
                 JSONArray entry = feed2.getJSONArray("entry");
+                jsonEntry.putString("FULL_JSON", root.toString());
+                jsonEntry.putString("ENTRY_JSON", entry.toString());
+                jsonEntry.commit();
 
+                // Title, Large Image, Artist, Duration, Artist, Category, release Date and link
                 for(int i = 0; i < entry.length(); i = i+2) {
                     String title = entry.getJSONObject(i).getJSONObject("title").getString("label");
-                    String imgUrl = entry.getJSONObject(i).getJSONArray("im:image").getJSONObject(0).getString("label");
+                    int imgArrayLength = entry.getJSONObject(i).getJSONArray("im:image").length();
+                    String thumbImgUrl = entry.getJSONObject(i).getJSONArray("im:image").getJSONObject(0).getString("label");
+                    String imgUrl = entry.getJSONObject(i).getJSONArray("im:image").getJSONObject(imgArrayLength-1).getString("label");
+//                        getJSONObject(0).getString("label");
 
                     list.add(i, title);
-                    list.add((i + 1), imgUrl);
+                    list.add((i + 1), thumbImgUrl);
+                    publishProgress();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -75,7 +84,8 @@ public class MediaListActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> result) {
+        protected void onPostExecute(final ArrayList<String> result) {
+            final ArrayList<String> resultCopy = result;
             super.onPostExecute(result);
             progressDialog.dismiss();
             if(result != null) {
@@ -92,23 +102,14 @@ public class MediaListActivity extends AppCompatActivity {
                 editor.putStringSet("list", set);
                 editor.commit();
 
-                // this set is never used? also
-//                set = pref.getStringSet("list", null);
-//                ArrayList<String> sample = new ArrayList<>(set);
-
-//                ScrollView scrollView = new ScrollView(MediaListActivity.this);
-//                scrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-//                LinearLayout horizontalLinearLayout = new LinearLayout(MediaListActivity.this);
-//                horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-//                horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-//                scrollView.addView(horizontalLinearLayout);
-//                setContentView(scrollView);
-
                 LinearLayout verticalLayout = (LinearLayout) findViewById(R.id.child_vertical_layout);
 
-                //changed this to result instead of sample instead of result because the ordering
+                // changed this to result instead of sample instead of result because the ordering
                 // was being messed up.
+                Log.d("demo", "result.size() " + result.size());
                 for(int i=0; i < result.size(); i = i+2) {
+                    final int j = i;
+                    Log.d("demo", "i is " + i);
                     LinearLayout horizontalLinearLayout = new LinearLayout(MediaListActivity.this);
                     horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -121,15 +122,16 @@ public class MediaListActivity extends AppCompatActivity {
                     TextView tv = new TextView(MediaListActivity.this);
                     tv.setText(result.get(i));
                     horizontalLinearLayout.addView(tv);
+                    verticalLayout.addView(horizontalLinearLayout);
 
                     horizontalLinearLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.d("demo", "clicked a horizontal view");
+                            Intent intent = new Intent(MediaListActivity.this, DetailedMediaActivity.class);
+                            intent.putExtra("INDEX", j);
+                            startActivity(intent);
                         }
                     });
-
-                    verticalLayout.addView(horizontalLinearLayout);
                 }
             }
         }
@@ -144,9 +146,5 @@ public class MediaListActivity extends AppCompatActivity {
             progressDialog.setMessage("Loading apps ...");
             progressDialog.show();
         }
-    }
-
-    protected void testMethod() {
-
     }
 }

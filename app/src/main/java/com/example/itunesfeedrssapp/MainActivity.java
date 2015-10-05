@@ -38,8 +38,8 @@ public class MainActivity extends Activity {
             audio_books.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this,MediaListActivity.class);
-                    intent.putExtra("URL","https://itunes.apple.com/us/rss/topaudiobooks/limit=25/json");
+                    Intent intent = new Intent(MainActivity.this, MediaListActivity.class);
+                    intent.putExtra("URL", "https://itunes.apple.com/us/rss/topaudiobooks/limit=25/json");
                     startActivity(intent);
                 }
             });
@@ -106,6 +106,7 @@ public class MainActivity extends Activity {
                     startActivity(intent);
                     }
             });
+
         } else {
             Toast.makeText(MainActivity.this, "Not Connected", Toast.LENGTH_SHORT).show();
         }

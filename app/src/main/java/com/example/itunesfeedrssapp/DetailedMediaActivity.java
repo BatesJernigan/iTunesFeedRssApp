@@ -1,18 +1,31 @@
 package com.example.itunesfeedrssapp;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -28,51 +41,72 @@ public class DetailedMediaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_media);
 
-//        String author = this.getIntent().getParcelableArrayExtra()
-//        String price = this.getIntent().getExtras().getString(MediaListActivity.PRICE);
-//        String category = this.getIntent().getExtras().getString(MediaListActivity.CATEGORY);
+        TextView artistText = (TextView) findViewById(R.id.artist_value);
+        TextView titleText = (TextView) findViewById(R.id.app_title);
+        TextView linkText = (TextView) findViewById(R.id.app_link_value);
+        ImageView largeImage = (ImageView) findViewById(R.id.detailed_act_image_view);
 
+        Log.d("demo", "inside of detailed on create");
+        SharedPreferences settings = getSharedPreferences(MediaListActivity.PREFS_NAME, 0);
+        String sharedPrefEntry = settings.getString("ENTRY_JSON", "nothing to see in entry json");
+        Log.d("demo", "sharedPrefEntry: " + sharedPrefEntry);
+        int intentIndex = this.getIntent().getIntExtra("INDEX", -1);
+
+        try {
+            JSONArray jsonEntry = new JSONArray(sharedPrefEntry);
+            String title = jsonEntry.getJSONObject(intentIndex).getJSONObject("title").getString("label");
+            titleText.setText(title);
+            String artist = jsonEntry.getJSONObject(intentIndex).getJSONObject("im:artist").getString("label");
+            artistText.setText(artist);
+            String image_url = jsonEntry.getJSONObject(intentIndex).getJSONArray("im:image").getJSONObject(2).getString("label");
+            Picasso.with(DetailedMediaActivity.this).load(image_url).into(largeImage);
+            setLinkField(jsonEntry, intentIndex);
+
+            setDurationField(jsonEntry, intentIndex);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private class GetImage extends AsyncTask<String, Void, Bitmap> {
-        ProgressDialog progressDialog;
+    public void setLinkField(JSONArray jsonEntry, int intentIndex) throws JSONException{
 
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            try {
-                URL url = new URL(params[0]);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                publishProgress();
-                Bitmap image = new BitmapFactory().decodeStream(con.getInputStream());
-                return image;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
+        TextView linkText = (TextView) findViewById(R.id.app_link_value);
+        String link = "no link provided";
+
+        Object linkObj = jsonEntry.getJSONObject(intentIndex).get("link");
+        if (linkObj instanceof JSONArray) {
+            Log.d("demo", "is a json array");
+            link = jsonEntry.getJSONObject(intentIndex).getJSONArray("link").getJSONObject(0).getJSONObject("attributes").getString("href");
+        } else if (linkObj instanceof JSONObject) {
+            Log.d("demo", "is json object");
+            link = jsonEntry.getJSONObject(intentIndex).getJSONObject("link").getJSONObject("attributes").getString("href");
+        } else {
+            Log.d("demo", "whoops!");
         }
 
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            ImageView imageView = (ImageView) findViewById(R.id.detailed_act_image_view);
-            if (result != null) {
-                imageView.setImageBitmap(result);
-            } else {
-                imageView.setImageDrawable(ContextCompat.getDrawable(DetailedMediaActivity.this, R.drawable.no_image));
-            }
-            progressDialog.dismiss();
-        }
+        linkText.setText(link);
+    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(DetailedMediaActivity.this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage("Loading Image");
-            progressDialog.show();
+    public void setDurationField(JSONArray jsonEntry, int intentIndex) throws JSONException {
+        if(jsonEntry.getJSONObject(intentIndex).getJSONArray("link").getJSONObject(1).has("im:duration")) {
+            String duration = jsonEntry.getJSONObject(intentIndex).getJSONArray("link").getJSONObject(1).getJSONObject("im:duration").getString("label");
+            Log.d("demo", "duration: " + duration);
+            RelativeLayout layout = (RelativeLayout) findViewById(R.id.detailed_act_layout);
+//        tv.setText(result.get(i));
+//        horizontalLinearLayout.addView(tv);
+            TextView durationView = new TextView(DetailedMediaActivity.this);
+            durationView.setWidth(RelativeLayout.LayoutParams.WRAP_CONTENT);
+            durationView.setHeight(RelativeLayout.LayoutParams.WRAP_CONTENT);
+            durationView.setText("Duration: " + duration);
+            layout.addView(durationView);
+
+//            TextView durationText = new TextView(DetailedMediaActivity.this);
+//            durationText.setWidth(RelativeLayout.LayoutParams.WRAP_CONTENT);
+//            durationText.setHeight(RelativeLayout.LayoutParams.WRAP_CONTENT);
+//            durationText.setText(duration);
+//            layout.addView(durationText);
         }
     }
 

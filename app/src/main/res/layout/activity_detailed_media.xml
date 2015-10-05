@@ -6,6 +6,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
+                android:id="@+id/detailed_act_layout"
                 tools:context="com.example.itunesfeedrssapp.DetailedMediaActivity">
 
     <TextView
@@ -29,60 +30,47 @@
         android:id="@+id/detailed_act_image_view"/>
 
     <TextView
-        style="@style/scrollTextViewOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/hello_world"
         android:layout_alignParentBottom="true"
         android:id="@+id/app_link_value"/>
 
     <TextView
-        style="@style/scrollTextViewOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/app_link_text_label"
         android:layout_above="@id/app_link_value"
         android:id="@+id/app_link_text_view"/>
 
     <TextView
-        style="@style/scrollTextViewOptions"
-        android:text="@string/category_text_view_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_above="@id/app_link_text_view"
-        android:id="@+id/category_text_view"/>
+        android:id="@+id/duration_text_view"/>
 
     <TextView
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/category_text_view_label"
-        android:layout_toRightOf="@id/category_text_view"
-        android:layout_alignTop="@id/category_text_view"
-        android:layout_alignBottom="@id/category_text_view"
-        android:id="@+id/category_value"/>
-
-    <TextView
-        style="@style/scrollTextViewOptions"
-        android:text="@string/price_text_view_label"
-        android:layout_above="@id/category_text_view"
-        android:id="@+id/price_text_view"/>
-
-    <TextView
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/category_text_view_label"
-        android:layout_toRightOf="@id/price_text_view"
-        android:layout_alignTop="@id/price_text_view"
-        android:layout_alignBottom="@id/price_text_view"
-        android:id="@+id/price_value"/>
-
-    <TextView
-        style="@style/scrollTextViewOptions"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/by_text_view_label"
-        android:layout_above="@id/price_text_view"
-        android:id="@+id/by_text_view"/>
+        android:layout_above="@id/duration_text_view"
+        android:id="@+id/artist_text_view"/>
 
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/category_text_view_label"
-        android:layout_toRightOf="@id/by_text_view"
-        android:layout_alignTop="@id/by_text_view"
-        android:layout_alignBottom="@id/by_text_view"
-        android:id="@+id/by_value"/>
+        android:layout_toRightOf="@id/artist_text_view"
+        android:layout_toEndOf="@id/artist_text_view"
+        android:layout_alignTop="@id/artist_text_view"
+        android:layout_alignBottom="@id/artist_text_view"
+        android:id="@+id/artist_value"/>
 
 </RelativeLayout>
