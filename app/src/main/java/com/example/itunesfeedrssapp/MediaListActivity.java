@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +35,8 @@ import java.util.TimerTask;
 public class MediaListActivity extends AppCompatActivity {
     public final static String PREFS_NAME = "iTunesJSON";
     ProgressDialog progressDialog;
-    ArrayList<String> list = new ArrayList<>();
+    SharedPreferences settings;
+    ArrayList<String> list;
     Timer timer = new Timer();
 
     @Override
@@ -50,6 +52,14 @@ public class MediaListActivity extends AppCompatActivity {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                if(Looper.myLooper() == null) {
+                    Looper.prepare();
+                }
+
+                SharedPreferences.Editor removePrefs = settings.edit();
+                removePrefs.clear();
+                removePrefs.commit();
+
                 new ProgressTask().execute(url);
             }
         }, timeInMilliseconds, timeInMilliseconds);
@@ -60,8 +70,9 @@ public class MediaListActivity extends AppCompatActivity {
         protected ArrayList<String> doInBackground(String... params) {
 
             JSONParser jParser = new JSONParser();
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            settings = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor jsonEntry = settings.edit();
+            list = new ArrayList<>();
 
             try {
                 JSONObject root =  jParser.getJSONFromUrl(params[0]);
@@ -76,8 +87,6 @@ public class MediaListActivity extends AppCompatActivity {
                     String title = entry.getJSONObject(i).getJSONObject("title").getString("label");
                     int imgArrayLength = entry.getJSONObject(i).getJSONArray("im:image").length();
                     String thumbImgUrl = entry.getJSONObject(i).getJSONArray("im:image").getJSONObject(0).getString("label");
-                    String imgUrl = entry.getJSONObject(i).getJSONArray("im:image").getJSONObject(imgArrayLength-1).getString("label");
-//                        getJSONObject(0).getString("label");
 
                     list.add(i, title);
                     list.add((i + 1), thumbImgUrl);
@@ -107,19 +116,18 @@ public class MediaListActivity extends AppCompatActivity {
                 // would love some clarity
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyDataList", MODE_PRIVATE);
                 final SharedPreferences.Editor editor = pref.edit();
-                Set<String> set = new HashSet<>();
+                HashSet<String> set = new HashSet<>();
                 set.addAll(result);
                 editor.putStringSet("list", set);
                 editor.commit();
 
                 final LinearLayout verticalLayout = (LinearLayout) findViewById(R.id.child_vertical_layout);
+                verticalLayout.removeAllViews();
 
                 // changed this to result instead of sample instead of result because the ordering
                 // was being messed up.
-                Log.d("demo", "result.size() " + result.size());
                 for(int i=0; i < result.size(); i = i+2) {
                     final int j = i;
-                    Log.d("demo", "i is " + i);
                     LinearLayout horizontalLinearLayout = new LinearLayout(MediaListActivity.this);
                     horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -140,6 +148,23 @@ public class MediaListActivity extends AppCompatActivity {
                             Intent intent = new Intent(MediaListActivity.this, DetailedMediaActivity.class);
                             intent.putExtra("INDEX", j);
                             startActivity(intent);
+                        }
+                    });
+
+
+                    horizontalLinearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            verticalLayout.removeView(v);
+
+//                            none of the below works
+//                            int id = v.getId();
+//                            Log.d("demo", "id: " + id);
+//                            result.remove(id);
+//                            Set<String> set = new HashSet<>(result);
+//                            editor.putStringSet("list",set);
+//                            editor.commit();
+                            return true;
                         }
                     });
                 }
