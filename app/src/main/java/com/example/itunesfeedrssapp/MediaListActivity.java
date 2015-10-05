@@ -111,7 +111,7 @@ public class MediaListActivity extends AppCompatActivity {
                     final int j = i;
                     Log.d("demo", "i is " + i);
                     LinearLayout horizontalLinearLayout = new LinearLayout(MediaListActivity.this);
-                    horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
                     horizontalLinearLayout.setPadding(10, 10, 10, 10);
 
