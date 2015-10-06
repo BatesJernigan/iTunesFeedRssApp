@@ -41,8 +41,8 @@ public class DetailedMediaActivity extends AppCompatActivity {
             params.setMargins(6, 6, 6, 6);
 
             SharedPreferences settings = getSharedPreferences(MediaListActivity.PREFS_NAME, 0);
-            String sharedPrefEntry = settings.getString("ENTRY_JSON", "nothing to see in entry json");
-            int intentIndex = this.getIntent().getIntExtra("INDEX", -1);
+            String sharedPrefEntry = settings.getString(getString(R.string.ENTRY_JSON_RESOURCE), "nothing to see in entry json");
+            int intentIndex = this.getIntent().getIntExtra(getString(R.string.INDEX_EXTRA), -1);
 
             try {
                 JSONArray jsonEntry = new JSONArray(sharedPrefEntry);

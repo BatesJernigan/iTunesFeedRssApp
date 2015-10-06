@@ -1,21 +1,15 @@
 package com.example.itunesfeedrssapp;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -26,7 +20,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,7 +29,7 @@ public class MediaListActivity extends AppCompatActivity {
     public final static String PREFS_NAME = "iTunesJSON";
     ProgressDialog progressDialog;
     SharedPreferences settings;
-    ArrayList<String> list;
+
     Timer timer = new Timer();
 
     @Override
@@ -72,14 +65,13 @@ public class MediaListActivity extends AppCompatActivity {
             JSONParser jParser = new JSONParser();
             settings = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor jsonEntry = settings.edit();
-            list = new ArrayList<>();
+            ArrayList<String> list = new ArrayList<>();
 
             try {
                 JSONObject root =  jParser.getJSONFromUrl(params[0]);
                 JSONObject feed2 = root.getJSONObject("feed");
                 JSONArray entry = feed2.getJSONArray("entry");
-                jsonEntry.putString("FULL_JSON", root.toString());
-                jsonEntry.putString("ENTRY_JSON", entry.toString());
+                jsonEntry.putString(getString(R.string.ENTRY_JSON_RESOURCE), entry.toString());
                 jsonEntry.commit();
 
                 // Title, Large Image, Artist, Duration, Artist, Category, release Date and link
@@ -104,11 +96,9 @@ public class MediaListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(final ArrayList<String> result) {
-            final ArrayList<String> resultCopy = result;
             super.onPostExecute(result);
             progressDialog.dismiss();
             if(result != null) {
-                Log.d("demo", "result: "+result.toString());
                 // what is img_pref this used for?
                 //SharedPreferences img_pref = getApplicationContext().getSharedPreferences("MyImgList", MODE_PRIVATE);
 
@@ -118,7 +108,7 @@ public class MediaListActivity extends AppCompatActivity {
                 final SharedPreferences.Editor editor = pref.edit();
                 HashSet<String> set = new HashSet<>();
                 set.addAll(result);
-                editor.putStringSet("list", set);
+                editor.putStringSet(getString(R.string.STRING_SET_LIST), set);
                 editor.commit();
 
                 final LinearLayout verticalLayout = (LinearLayout) findViewById(R.id.child_vertical_layout);
@@ -132,6 +122,7 @@ public class MediaListActivity extends AppCompatActivity {
                     horizontalLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     horizontalLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
                     horizontalLinearLayout.setPadding(10, 10, 10, 10);
+                    horizontalLinearLayout.setId(i);
 
                     ImageView im = new ImageView(MediaListActivity.this);
                     Picasso.with(MediaListActivity.this).load(result.get(i+1)).resize(100, 100).centerCrop().into(im);
@@ -146,7 +137,7 @@ public class MediaListActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(MediaListActivity.this, DetailedMediaActivity.class);
-                            intent.putExtra("INDEX", j);
+                            intent.putExtra(getString(R.string.INDEX_EXTRA), j);
                             startActivity(intent);
                         }
                     });
@@ -156,14 +147,12 @@ public class MediaListActivity extends AppCompatActivity {
                         @Override
                         public boolean onLongClick(View v) {
                             verticalLayout.removeView(v);
-
-//                            none of the below works
-//                            int id = v.getId();
-//                            Log.d("demo", "id: " + id);
-//                            result.remove(id);
-//                            Set<String> set = new HashSet<>(result);
-//                            editor.putStringSet("list",set);
-//                            editor.commit();
+                            int id = v.getId();
+                            result.remove(id);
+                            result.remove(id + 1);
+                            Set<String> set = new HashSet<>(result);
+                            editor.putStringSet(getString(R.string.STRING_SET_LIST), set);
+                            editor.commit();
                             return true;
                         }
                     });

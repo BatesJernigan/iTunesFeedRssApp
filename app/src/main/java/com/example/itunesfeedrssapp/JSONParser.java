@@ -18,9 +18,7 @@ public class JSONParser {
     static JSONObject jarray = null;
     static String json = "";
 
-    public JSONParser() {
-
-    }
+    public JSONParser() {}
 
     public JSONObject getJSONFromUrl(String url) throws IOException {
         StringBuilder builder = new StringBuilder();

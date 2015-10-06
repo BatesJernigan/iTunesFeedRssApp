@@ -18,4 +18,7 @@
     <string name="category_text_view_label">Category: </string>
     <string name="price_text_view_label">Price: </string>
     <string name="by_text_view_label">By:</string>
+    <string name="STRING_SET_LIST">LIST</string>
+    <string name="INDEX_EXTRA">INDEX</string>
+    <string name="ENTRY_JSON_RESOURCE">ENTRY_JSON</string>
 </resources>
